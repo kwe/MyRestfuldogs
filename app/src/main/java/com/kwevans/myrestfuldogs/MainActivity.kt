@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             if (dogsList != null) {
                 while (dogsList.hasNext()) {
                     val dog = dogsList.next()
-                    val result = " ${dog.name} is a ${dog.breed}" + "\n"
+                    val result = "\n\n ${dog.name} is a ${dog.breed}" + "\n"
                     text_view.append(result)
                 }
             }
