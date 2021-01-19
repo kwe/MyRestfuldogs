@@ -17,9 +17,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         retService = RetrofitInstance
-            .getRetrofitInstance()
-            .create(DogsService::class.java)
+                .getRetrofitInstance()
+                .create(DogsService::class.java)
         getSomeDogs()
+//        uploadDog()
     }
 
     private fun getSomeDogs(){
@@ -32,10 +33,26 @@ class MainActivity : AppCompatActivity() {
             if (dogsList != null) {
                 while (dogsList.hasNext()) {
                     val dog = dogsList.next()
-                    val result = "\n\n ${dog.name} is a ${dog.breed}" + "\n"
+                    val result = "\n ${dog.name} is a ${dog.breed}" + "\n"
                     text_view.append(result)
                 }
             }
+        })
+    }
+
+    private fun uploadDog(){
+        val dog = Dog(0,"Dotty", "Spotty Dog")
+        val postResponse: LiveData<Response<Dog>> = liveData {
+            val response = retService.uploadDog(dog)
+            emit(response)
+        }
+
+        postResponse.observe(this, Observer
+        {
+            val receivedDog = it.body()
+            val result = " " + "Dog added: ${receivedDog?.name}" + "\n"
+
+            text_view.text = result
         })
     }
 }
